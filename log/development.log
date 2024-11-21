@@ -1,0 +1,367 @@
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "accesses"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "accesses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "book_id" integer NOT NULL, "level" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_book_id" ON "accesses" ("book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_accesses_on_user_id_and_book_id" ON "accesses" ("user_id", "book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_user_id" ON "accesses" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "accounts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "join_code" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "custom_styles" text)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "action_text_markdowns"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "action_text_markdowns" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "record_type" varchar NOT NULL, "record_id" integer NOT NULL, "name" varchar NOT NULL, "content" text DEFAULT '' NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_action_text_markdowns_on_record" ON "action_text_markdowns" ("record_type", "record_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_attachments"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "record_type" varchar NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "slug" varchar)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_on_slug" ON "active_storage_attachments" ("slug")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_blobs"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "active_storage_blobs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "key" varchar NOT NULL, "filename" varchar NOT NULL, "content_type" varchar, "metadata" text, "service_name" varchar NOT NULL, "byte_size" bigint NOT NULL, "checksum" varchar, "created_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_blobs_on_key" ON "active_storage_blobs" ("key")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_storage_variant_records"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "books"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "books" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "subtitle" varchar, "author" varchar, "published" boolean DEFAULT 0 NOT NULL, "slug" varchar NOT NULL, "everyone_access" boolean DEFAULT 1 NOT NULL, "theme" varchar DEFAULT 'blue' NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_books_on_published" ON "books" ("published")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "edits"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "edits" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "leaf_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "action" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_edits_on_leaf_id" ON "edits" ("leaf_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_edits_on_leafable" ON "edits" ("leafable_type", "leafable_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "leaves"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "leaves" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "book_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "position_score" float NOT NULL, "status" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "title" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leaves_on_book_id" ON "leaves" ("book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leafs_on_leafable" ON "leaves" ("leafable_type", "leafable_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "pages"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "pages" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "pictures"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "pictures" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "caption" varchar)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "sections"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "sections" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "theme" varchar, "body" text)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "sessions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "sessions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "token" varchar NOT NULL, "ip_address" varchar, "user_agent" varchar, "last_active_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_sessions_on_token" ON "sessions" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_sessions_on_user_id" ON "sessions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "email_address" varchar NOT NULL, "password_digest" varchar NOT NULL, "role" integer NOT NULL, "active" boolean DEFAULT 1, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email_address" ON "users" ("email_address")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_name" ON "users" ("name")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aaccesses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "book_id" integer NOT NULL, "level" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccesses_on_user_id" ON "aaccesses" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aaccesses_on_user_id_and_book_id" ON "aaccesses" ("user_id", "book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccesses_on_book_id" ON "aaccesses" ("book_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aaccesses" ("id","user_id","book_id","level","created_at","updated_at")
+                     SELECT "id","user_id","book_id","level","created_at","updated_at" FROM "accesses"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "accesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "accesses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "book_id" integer NOT NULL, "level" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_a453fa1dab"
+FOREIGN KEY ("book_id")
+  REFERENCES "books" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_book_id" ON "accesses" ("book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_accesses_on_user_id_and_book_id" ON "accesses" ("user_id", "book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_user_id" ON "accesses" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "accesses" ("id","user_id","book_id","level","created_at","updated_at")
+                     SELECT "id","user_id","book_id","level","created_at","updated_at" FROM "aaccesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aaccesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (1.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aaccesses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "book_id" integer NOT NULL, "level" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccesses_on_user_id" ON "aaccesses" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aaccesses_on_user_id_and_book_id" ON "aaccesses" ("user_id", "book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccesses_on_book_id" ON "aaccesses" ("book_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aaccesses" ("id","user_id","book_id","level","created_at","updated_at")
+                     SELECT "id","user_id","book_id","level","created_at","updated_at" FROM "accesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "accesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "accesses" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "book_id" integer NOT NULL, "level" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_a453fa1dab"
+FOREIGN KEY ("book_id")
+  REFERENCES "books" ("id")
+, CONSTRAINT "fk_rails_e47574ce84"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_book_id" ON "accesses" ("book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_accesses_on_user_id_and_book_id" ON "accesses" ("user_id", "book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accesses_on_user_id" ON "accesses" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "accesses" ("id","user_id","book_id","level","created_at","updated_at")
+                     SELECT "id","user_id","book_id","level","created_at","updated_at" FROM "aaccesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aaccesses"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "record_type" varchar NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "slug" varchar)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_attachments_on_slug" ON "aactive_storage_attachments" ("slug")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_attachments_uniqueness" ON "aactive_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aactive_storage_attachments_on_blob_id" ON "aactive_storage_attachments" ("blob_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_attachments" ("id","name","record_type","record_id","blob_id","created_at","slug")
+                     SELECT "id","name","record_type","record_id","blob_id","created_at","slug" FROM "active_storage_attachments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "active_storage_attachments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "active_storage_attachments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar NOT NULL, "record_type" varchar NOT NULL, "record_id" bigint NOT NULL, "blob_id" bigint NOT NULL, "created_at" datetime(6) NOT NULL, "slug" varchar, CONSTRAINT "fk_rails_c3b3935057"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_active_storage_attachments_on_blob_id" ON "active_storage_attachments" ("blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_uniqueness" ON "active_storage_attachments" ("record_type", "record_id", "name", "blob_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_attachments_on_slug" ON "active_storage_attachments" ("slug")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_attachments" ("id","name","record_type","record_id","blob_id","created_at","slug")
+                     SELECT "id","name","record_type","record_id","blob_id","created_at","slug" FROM "aactive_storage_attachments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aactive_storage_attachments"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aactive_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_aactive_storage_variant_records_uniqueness" ON "aactive_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aactive_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "active_storage_variant_records"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "active_storage_variant_records"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "active_storage_variant_records" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "blob_id" bigint NOT NULL, "variation_digest" varchar NOT NULL, CONSTRAINT "fk_rails_993965df05"
+FOREIGN KEY ("blob_id")
+  REFERENCES "active_storage_blobs" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_active_storage_variant_records_uniqueness" ON "active_storage_variant_records" ("blob_id", "variation_digest")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "active_storage_variant_records" ("id","blob_id","variation_digest")
+                     SELECT "id","blob_id","variation_digest" FROM "aactive_storage_variant_records"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aactive_storage_variant_records"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aedits" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "leaf_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "action" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aedits_on_leafable" ON "aedits" ("leafable_type", "leafable_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aedits_on_leaf_id" ON "aedits" ("leaf_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aedits" ("id","leaf_id","leafable_type","leafable_id","action","created_at","updated_at")
+                     SELECT "id","leaf_id","leafable_type","leafable_id","action","created_at","updated_at" FROM "edits"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "edits"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "edits" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "leaf_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "action" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_855918d132"
+FOREIGN KEY ("leaf_id")
+  REFERENCES "leaves" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_edits_on_leaf_id" ON "edits" ("leaf_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_edits_on_leafable" ON "edits" ("leafable_type", "leafable_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "edits" ("id","leaf_id","leafable_type","leafable_id","action","created_at","updated_at")
+                     SELECT "id","leaf_id","leafable_type","leafable_id","action","created_at","updated_at" FROM "aedits"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aedits"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aleaves" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "book_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "position_score" float NOT NULL, "status" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "title" varchar NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_leafs_on_leafable" ON "aleaves" ("leafable_type", "leafable_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aleaves_on_book_id" ON "aleaves" ("book_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "aleaves" ("id","book_id","leafable_type","leafable_id","position_score","status","created_at","updated_at","title")
+                     SELECT "id","book_id","leafable_type","leafable_id","position_score","status","created_at","updated_at","title" FROM "leaves"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "leaves"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "leaves" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "book_id" integer NOT NULL, "leafable_type" varchar NOT NULL, "leafable_id" integer NOT NULL, "position_score" float NOT NULL, "status" varchar NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "title" varchar NOT NULL, CONSTRAINT "fk_rails_3bb84105c0"
+FOREIGN KEY ("book_id")
+  REFERENCES "books" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leaves_on_book_id" ON "leaves" ("book_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_leafs_on_leafable" ON "leaves" ("leafable_type", "leafable_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "leaves" ("id","book_id","leafable_type","leafable_id","position_score","status","created_at","updated_at","title")
+                     SELECT "id","book_id","leafable_type","leafable_id","position_score","status","created_at","updated_at","title" FROM "aleaves"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aleaves"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[36mBEGIN immediate TRANSACTION[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "asessions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "token" varchar NOT NULL, "ip_address" varchar, "user_agent" varchar, "last_active_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_asessions_on_user_id" ON "asessions" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "tindex_asessions_on_token" ON "asessions" ("token")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "asessions" ("id","user_id","token","ip_address","user_agent","last_active_at","created_at","updated_at")
+                     SELECT "id","user_id","token","ip_address","user_agent","last_active_at","created_at","updated_at" FROM "sessions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "sessions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "sessions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "token" varchar NOT NULL, "ip_address" varchar, "user_agent" varchar, "last_active_at" datetime(6) NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_758836b4f0"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_sessions_on_token" ON "sessions" ("token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_sessions_on_user_id" ON "sessions" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "sessions" ("id","user_id","token","ip_address","user_agent","last_active_at","created_at","updated_at")
+                     SELECT "id","user_id","token","ip_address","user_agent","last_active_at","created_at","updated_at" FROM "asessions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "asessions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mCOMMIT TRANSACTION[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mCREATE VIRTUAL TABLE IF NOT EXISTS leaf_search_index USING fts5 (title, content, tokenize='porter')[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20240928005927)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20240625224312),
+(20240625202351),
+(20240625084002),
+(20240617075643);[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2024-11-21 02:29:14.039128', '2024-11-21 02:29:14.039129') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'f3d918a279728bd9ee73c0fc430df4eeb0e22eab', '2024-11-21 02:29:14.040792', '2024-11-21 02:29:14.040793') RETURNING "key"[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started GET "/" for ::1 at 2024-11-21 10:29:26 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by BooksController#index as HTML
+  [1m[36mBook Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "books" WHERE "books"."published" = ? LIMIT ?[0m  [["published", 1], ["LIMIT", 1]]
+  ↳ app/controllers/books_controller.rb:59:in `ensure_index_is_not_empty'
+Redirected to http://localhost:3000/session/new
+Filter chain halted as :ensure_index_is_not_empty rendered or redirected
+Completed 302 Found in 93ms (ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 4.4ms)
+
+
+Started GET "/session/new" for ::1 at 2024-11-21 10:29:26 +0800
+Processing by SessionsController#new as HTML
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:27:in `ensure_user_exists'
+Redirected to http://localhost:3000/first_run
+Filter chain halted as :ensure_user_exists rendered or redirected
+Completed 302 Found in 36ms (ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/first_run" for ::1 at 2024-11-21 10:29:26 +0800
+Processing by FirstRunsController#show as HTML
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/first_runs_controller.rb:19:in `prevent_running_after_setup'
+  Rendering layout layouts/application.html.erb
+  Rendering first_runs/show.html.erb within layouts/application
+  Rendered first_runs/show.html.erb within layouts/application (Duration: 12.8ms | GC: 0.0ms)
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" ORDER BY "accounts"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/models/current.rb:5:in `account'
+  Rendered layouts/_lightbox.html.erb (Duration: 1.0ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 33.2ms | GC: 0.0ms)
+Completed 200 OK in 80ms (Views: 35.9ms | ActiveRecord: 0.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/assets/_reset-9c3efd7b.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/animation-1682b112.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/arrangement-c9cf9cb6.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/buttons-a64f7e63.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/colors-a7c91784.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/dialog-7b5e0174.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/house-ff27e08a.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/inputs-1ea862b1.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/layout-e0cc5584.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/library-057fba11.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/lightbox-4b7304b1.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/pages-5dde5a94.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/panels-fea8d3f3.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/popover-af2d6172.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/product-337efcef.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/qr-code-09948d66.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/search-a617fcd6.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/sidebar-3dac38ff.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/syntax-f7150790.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/text-94431914.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/toc-50e24158.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/translations-e96ea992.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/utilities-32924371.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/base-a40e8eee.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/application-9897dfb8.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/turbo.min-fae85750.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/stimulus.min-4b1e420e.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/stimulus-loading-1fc53fe7.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/@rails--request-10d39805.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/actions/index-a8af7f75.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/actions/scroll_into_view-9f3401f5.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/books-c0aa9913.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/application-3affb389.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/auto_submit_controller-ee52d396.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autoremove_controller-4526910a.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/breadcrumbs-9b980014.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autosave_controller-dd3ea732.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autoselect_controller-0cb7d4b1.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/copy_to_clipboard_controller-07e32f4d.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/dependent_checkbox_controller-5e5cab70.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/dialog_controller-b6629724.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/edit_mode_controller-61080a1c.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/form_controller-6f3d64db.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/fullscreen_controller-e4a3fba2.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/hotkey_controller-0d616407.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/index-c3f5d3c4.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/lightbox_controller-de0ddc64.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/popover_controller-6d55debe.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/reading_progress_controller-1fc9604c.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/reading_tracker_controller-d394aa22.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/scroll_to_highlight_controller-c828e5e2.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/sidebar_controller-0ea88c95.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/touch_controller-0b5ff8b4.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/upload_preview_controller-7b3123d6.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/trix-c4e7be2d.css" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/web_share_controller-d62a7b0f.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/helpers/cookie_helpers-a1787e92.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/helpers/form_helpers-70a3c11f.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/helpers/reading_progress_helpers-d5510241.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/writebook-icon-8e8f4c33.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/person-01c1c915.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/application-9897dfb8.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/actions/scroll_into_view-9f3401f5.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/email-6c595bc5.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/turbo.min-fae85750.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/application-3affb389.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/password-0896da4e.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/auto_submit_controller-ee52d396.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autoremove_controller-4526910a.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/arrow-right-61dca488.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autosave_controller-dd3ea732.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/copy_to_clipboard_controller-07e32f4d.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/autoselect_controller-0cb7d4b1.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/dependent_checkbox_controller-5e5cab70.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/dialog_controller-b6629724.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/edit_mode_controller-61080a1c.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/form_controller-6f3d64db.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/fullscreen_controller-e4a3fba2.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/hotkey_controller-0d616407.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/index-c3f5d3c4.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/lightbox_controller-de0ddc64.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/popover_controller-6d55debe.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/house.min-40172b20.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/reading_tracker_controller-d394aa22.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/scroll_to_highlight_controller-c828e5e2.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/stimulus-loading-1fc53fe7.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/stimulus.min-4b1e420e.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/@rails--request-10d39805.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/actions/index-a8af7f75.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/arrangement_controller-ee58c295.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/toc_view_controller-883b15e2.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/remove-d18dd986.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/helpers/timing_helpers-94d95529.js" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/globe-8c54d23b.svg" for ::1 at 2024-11-21 10:29:27 +0800
+Started GET "/assets/controllers/reading_progress_controller-1fc9604c.js" for ::1 at 2024-11-21 10:29:28 +0800
+Started GET "/manifest.json" for ::1 at 2024-11-21 10:29:28 +0800
+Processing by Rails::PwaController#manifest as JSON
+  Rendering pwa/manifest.json.erb
+  Rendered pwa/manifest.json.erb (Duration: 0.7ms | GC: 0.0ms)
+Completed 200 OK in 49ms (Views: 2.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
