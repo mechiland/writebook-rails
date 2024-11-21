@@ -6,6 +6,8 @@ class BooksController < ApplicationController
   before_action :set_users, only: %i[ new edit ]
   before_action :ensure_editable, only: %i[ edit update destroy ]
 
+  protect_from_forgery unless: -> { request.format.json? }
+
   def index
     @books = Book.accessable_or_published.ordered
   end

@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :books, except: %i[ index show ] do
+  resources :books, except: %i[ ] do
     resource :publication, controller: "books/publications", only: %i[ show edit update ]
     resource :bookmark, controller: "books/bookmarks", only: :show
 
